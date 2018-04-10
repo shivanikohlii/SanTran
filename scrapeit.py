@@ -1,5 +1,5 @@
 
-import json, urllib.request, csv
+import json, urllib.request, csv, re
 
 def readurl(url, **kwargs):
     return list(urllib.request.urlopen(url, **kwargs))[0]
@@ -76,6 +76,27 @@ def write_data_to_csv(data, file):
     with open(file, 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerows(rows)
+        
+def split_data_into_sentence_files(csv_file, out_sentence_file_prefix):
+    rows = []
+    with open(csv_file, 'r') as f:
+        reader = csv.reader(f)
+        rows = list(reader)
+        
+    with open(out_sentence_file_prefix + '.en', 'w') as f:
+        for row in rows:
+            en = row[5].strip()
+            en = re.sub('([^\s]+?)([,:;"\'\\[\\]?\\.!@#\$%\^&*\(\)`\|]+?)', '\\1 \\2', en)
+            en = re.sub('([,:;"\'\\[\\]?\\.!@#\$%\^&*\(\)`\|]+?)([^\s]+?)', '\\1 \\2', en)
+            f.write(en)
+            f.write('\n')
+    with open(out_sentence_file_prefix + '.san', 'w') as f:
+        for row in rows:
+            en = row[4].strip()
+            en = re.sub('([^\s]+?)([,:;"\'\\[\\]?\\.!@#\$%\^&*\(\)`\|]+?)', '\\1 \\2', en)
+            en = re.sub('([,:;"\'\\[\\]?\\.!@#\$%\^&*\(\)`\|]+?)([^\s]+?)', '\\1 \\2', en)
+            f.write(en)
+            f.write('\n')
     
 if __name__ == '__main__':
     index_data = get_index_data()
