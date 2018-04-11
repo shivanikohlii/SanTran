@@ -68,18 +68,18 @@ def getGita(chap, verse):
     mId = "c:"+str(chap)+"v"+str(verse)
     return (mId,SA,EN)
 
+if __name__ == '__main__':
+    versesInChap = [46,72,43,42,29,47,30,28,34,42,55,20,35,27,20,24,28,78] 
 
-versesInChap = [46,72,43,42,29,47,30,28,34,42,55,20,35,27,20,24,28,78] 
+    #print(getGita(5,3))
 
-#print(getGita(5,3))
-
-with open('data.csv','w') as out:
-    csv_out=csv.writer(out)
-    csv_out.writerow(["id","SA","EN"])
-    for i in range(1, 19): #chap
-        for j in range(1, versesInChap[i-1]+1): #verse
-            print("chap: " +str(i)+"verse: " +str(j))
-            csv_out.writerow(getGita(i,j))
+    with open('data.csv','w') as out:
+        csv_out=csv.writer(out)
+        csv_out.writerow(["id","SA","EN"])
+        for i in range(1, 19): #chap
+            for j in range(1, versesInChap[i-1]+1): #verse
+                print("chap: " +str(i)+"verse: " +str(j))
+                csv_out.writerow(getGita(i,j))
 
 
 

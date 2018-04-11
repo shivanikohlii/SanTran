@@ -77,22 +77,35 @@ def write_data_to_csv(data, file):
         writer = csv.writer(f)
         writer.writerows(rows)
         
-def split_data_into_sentence_files(csv_file, out_sentence_file_prefix):
+def convert_sanskrit(uni):
+    a = bytearray(uni, encoding = "utf-8").decode('unicode-escape')
+    return a
+        
+def split_data_into_sentence_files(csv_file, out_sentence_file_prefix, en_col=5, san_col=4, convert_san=False):
     rows = []
+    if convert_san:
+        with open(csv_file, 'rb') as f:
+            rows = list(f)
+        csv_file = 'decoded-' + csv_file
+        with open(csv_file, 'wb') as f:
+            for row in rows:
+                f.write(bytearray(row.decode('utf-8'), encoding='unicode-escape').replace(b'\\r\\n', b''))
+                f.write(b'\n')
+        
     with open(csv_file, 'r') as f:
         reader = csv.reader(f)
         rows = list(reader)
         
     with open(out_sentence_file_prefix + '.en', 'w') as f:
         for row in rows:
-            en = row[5].strip()
+            en = row[en_col].strip()
             en = re.sub('([^\s]+?)([,:;"\'\\[\\]?\\.!@#\$%\^&*\(\)`\|]+?)', '\\1 \\2', en)
             en = re.sub('([,:;"\'\\[\\]?\\.!@#\$%\^&*\(\)`\|]+?)([^\s]+?)', '\\1 \\2', en)
             f.write(en)
             f.write('\n')
     with open(out_sentence_file_prefix + '.san', 'w') as f:
         for row in rows:
-            en = row[4].strip()
+            en = row[san_col].strip()
             en = re.sub('([^\s]+?)([,:;"\'\\[\\]?\\.!@#\$%\^&*\(\)`\|]+?)', '\\1 \\2', en)
             en = re.sub('([,:;"\'\\[\\]?\\.!@#\$%\^&*\(\)`\|]+?)([^\s]+?)', '\\1 \\2', en)
             f.write(en)
