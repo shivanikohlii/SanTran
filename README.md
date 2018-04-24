@@ -19,7 +19,7 @@ Jupyter-Notebook from anaconda distribution
 
 * **Ben Wazlack** 
 
-* **Brandon ** 
+* **Brandon** 
 
 
 ## License
