@@ -28,7 +28,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* 
+* Nemzy. Based on his original code
 
 
 
